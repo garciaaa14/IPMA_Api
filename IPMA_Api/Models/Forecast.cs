@@ -1,15 +1,17 @@
-﻿namespace IPMA_Api.Models
+﻿public class Forecast
 {
-    public class Forecast
-    {
-        public string precipitaProb { get; set; }
-        public double tMin { get; set; }
-        public double tMax { get; set; }
-        public string predWindDir { get; set; }
-        public int idWeatherType { get; set; }
-        public int classWindSpeed { get; set; }
-        public int classPrecInt { get; set; }
-        public DateTime forecastDate { get; set; }
+    public DateTime forecastDate { get; set; }
 
-    }
+    public double tMin { get; set; }
+    public double tMax { get; set; }
+
+    public double precipitaProb { get; set; }
+
+    public string weatherType { get; set; }
+    public string windSpeed { get; set; }
+    public double rainIntensity { get; set; }
+
+    public string predWindDir { get; set; }
+
+    public string icon { get; set; }
 }
