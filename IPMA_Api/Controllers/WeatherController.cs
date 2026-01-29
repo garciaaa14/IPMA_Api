@@ -1,35 +1,50 @@
-﻿// /Controllers/WeatherController.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using IPMA_Api.Services;
+using IPMA_Api.Models;
+using IPMA_Api.DTOS;
 
 [ApiController]
 [Route("api/weather")]
 public class WeatherController : ControllerBase
 {
-    private readonly IpmaService _ipmaService;
+    private readonly Repository _repository;
 
-    public WeatherController(IpmaService ipmaService)
+    public WeatherController(Repository repository)
     {
-        _ipmaService = ipmaService;
+        _repository = repository;
     }
 
+    // =========================
+    // LISTA DE LOCAIS
+    // =========================
     [HttpGet("locations")]
-    public async Task<IActionResult> GetLocations()
+    public async Task<ActionResult<List<Local>>> GetLocations()
     {
-        var locations = await _ipmaService.GetLocationsAsync();
+        var locations = await _repository.GetLocations();
         return Ok(locations);
     }
 
+    // =========================
+    // TEMPO ATUAL
+    // =========================
     [HttpGet("current/{locationId}")]
-    public async Task<IActionResult> GetCurrentWeather(int locationId)
+    public async Task<ActionResult<CurrentWeather>> GetCurrentWeather(int locationId)
     {
-        var weather = await _ipmaService.GetCurrentWeatherAsync(locationId);
+        var weather = await _repository.GetCurrentWeather(locationId);
+
+        if (weather == null)
+            return NotFound("Local não encontrado");
+
         return Ok(weather);
     }
 
+    // =========================
+    // PREVISÃO 5 DIAS
+    // =========================
     [HttpGet("forecast/{locationId}")]
-    public async Task<IActionResult> GetForecast(int locationId)
+    public async Task<ActionResult<List<Forecast>>> GetForecast(int locationId)
     {
-        var forecast = await _ipmaService.GetForecastAsync(locationId);
+        var forecast = await _repository.GetForecast(locationId);
         return Ok(forecast);
     }
 }
